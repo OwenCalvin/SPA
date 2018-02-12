@@ -1,13 +1,21 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <router-view/>
+    <h1>{{ page }}</h1>
+    <button @click="next">Next</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  props: ['page'],
+  methods: {
+    next: () => {
+      console.log(this.page)
+      this.page++
+    }
+  }
 }
 </script>
 
