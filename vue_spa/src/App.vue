@@ -1,21 +1,16 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <h1>{{ page }}</h1>
-    <button @click="next">Next</button>
+    <Article/>
   </div>
 </template>
 
 <script>
+import Article from './components/Article.vue'
+
 export default {
   name: 'App',
-  props: ['page'],
-  methods: {
-    next: () => {
-      console.log(this.page)
-      this.page++
-    }
-  }
+  components: { Article }
 }
 </script>
 

@@ -1,28 +1,38 @@
 <template>
   <div class="hello">
-    <h1>{{ article.title }}</h1>
-    <h2>{{ article.article }}</h2>
-    <button @click="next">Previous</button>
-    <button @click="previous">Next</button>
+    <h1>{{ Article.title }}</h1>
+    <h2>{{ Article.article }}</h2>
+    <button @click="previous">Previous</button>
+    <button @click="next">Next</button>
   </div>
 </template>
 
 <script>
-import importer from '../articles/articles'
+import Loader from '../Articles/Loader'
+
 export default {
   name: 'Article',
-  props: ['page'],
-  data: () => {
+  data: function () {
+    let Page = 1
     return {
-      article: importer(1)
+      Page: Page,
+      Article: Loader.Load(Page)
     }
   },
   methods: {
-    next: () => {
-      this.article = importer(this.article.page + 1)
+    next: function () {
+      this.pageTurner(1)
     },
-    previous: () => {
-      this.article = importer(this.article.page - 1)
+    previous: function () {
+      this.pageTurner(-1)
+    },
+    pageTurner: function (value) {
+      this.Page = Loader.TurnPage(this.Page, value)
+    }
+  },
+  watch: {
+    Page: function () {
+      this.Article = Loader.Load(this.Page)
     }
   }
 }
