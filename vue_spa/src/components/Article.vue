@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ Article.title }}</h1>
-    <h2>{{ Article.article }}</h2>
+    <component :is="View"></component>
     <button @click="previous">Previous</button>
     <button @click="next">Next</button>
   </div>
@@ -15,8 +14,8 @@ export default {
   data: function () {
     let Page = 1
     return {
-      Page: Page,
-      Article: Loader.Load(Page)
+      View: Loader.LoadView(Page),
+      Page: Page
     }
   },
   methods: {
@@ -28,30 +27,25 @@ export default {
     },
     pageTurner: function (value) {
       this.Page = Loader.TurnPage(this.Page, value)
-    }
-  },
-  watch: {
-    Page: function () {
-      this.Article = Loader.Load(this.Page)
+      this.View = Loader.LoadView(this.Page)
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+  h1, h2 {
+    font-weight: normal;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+  a {
+    color: #42b983;
+  }
 </style>

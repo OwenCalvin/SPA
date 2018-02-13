@@ -1,23 +1,18 @@
 export const DefaultArticle = {
   page: 0,
   title: 'No article found',
-  article: '...'
+  view: () => import('./Pages/NoPage.vue')
 }
 
 export default [
   {
     page: 1,
     title: 'Title1',
-    article: 'Blabla1'
+    view: () => import('./Pages/Page1.vue')
   },
   {
     page: 2,
     title: 'Title2',
-    article: 'Blabla2'
-  },
-  {
-    page: 3,
-    title: 'Title3',
-    article: 'Blabla3'
+    view: () => import('./Pages/Page2.vue')
   }
 ]
