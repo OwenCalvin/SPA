@@ -1,6 +1,8 @@
 <template>
   <div class="hello">
-    <component :is="View"></component>
+    <transition name="fade" mode="out-in">
+      <component :is="View"></component>
+    </transition>
     <footer>
       <div class="PT" id="PTPrev" >
         <button @click="previous">Previous</button>
@@ -39,7 +41,6 @@ export default {
       this.Page = Loader.TurnPage(this.Page, value)
       this.View = Loader.LoadView(this.Page)
       this.Progression = (this.Page - 1) / (Loader.Count - 1) * 100
-      console.log(this.Progression)
     }
   }
 }
@@ -53,7 +54,6 @@ export default {
     display: flex;
     width: 100%;
     justify-content: space-between;
-    background: blue;
     margin: 0;
     height: $footerHeight;
 
@@ -64,14 +64,29 @@ export default {
 
     .backPB {
       $PBHeight: $footerHeight / 2;
+
       height: $PBHeight;
+      margin: 0 10px;
       margin-top: $PBHeight / 2;
-      width: 200px;
-      background: red;
+      width: 50%;
+      min-width: 200px;
+      background: rgb(207, 207, 207);
+      border-radius: 20px;
+      overflow: hidden;
       .PB {
         height: $PBHeight;
-        background: green;
+        background: rgb(27, 109, 240);
+        transition: width .2s;
       }
     }
   }
+</style>
+
+<style scoped>
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity .2s ease;
+    }
+    .fade-enter, .fade-leave-to {
+      opacity: 0;
+    }
 </style>
