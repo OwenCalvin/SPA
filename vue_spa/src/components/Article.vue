@@ -65,10 +65,10 @@ export default {
     window.addEventListener('keydown', function (event) {
       switch (event.keyCode) {
         case 37:
-          _this.previous()
+          _this.pageTurner(-1)
           break
         case 39:
-          _this.next()
+          _this.pageTurner(1)
           break
       }
     })
