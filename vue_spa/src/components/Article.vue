@@ -1,8 +1,17 @@
 <template>
   <div class="hello">
     <component :is="View"></component>
-    <button @click="previous">Previous</button>
-    <button @click="next">Next</button>
+    <footer>
+      <div class="PT" id="PTPrev" >
+        <button @click="previous">Previous</button>
+      </div>
+      <div class="backPB">
+        <div :style="{width: Progression + '%'}" class="PB"></div>
+      </div>
+      <div class="PT" id="PTNext">
+        <button @click="next">Next</button>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -15,7 +24,8 @@ export default {
     let Page = 1
     return {
       View: Loader.LoadView(Page),
-      Page: Page
+      Page: Page,
+      Progression: 0
     }
   },
   methods: {
@@ -28,24 +38,40 @@ export default {
     pageTurner: function (value) {
       this.Page = Loader.TurnPage(this.Page, value)
       this.View = Loader.LoadView(this.Page)
+      this.Progression = (this.Page - 1) / (Loader.Count - 1) * 100
+      console.log(this.Progression)
     }
   }
 }
 </script>
 
-<style scoped>
-  h1, h2 {
-    font-weight: normal;
-  }
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-  a {
-    color: #42b983;
+<style lang="scss" scoped>
+  footer {
+    $footerHeight: 50px;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background: blue;
+    margin: 0;
+    height: $footerHeight;
+
+    .PT button {
+      height: $footerHeight;
+      min-width: 200px;
+    }
+
+    .backPB {
+      $PBHeight: $footerHeight / 2;
+      height: $PBHeight;
+      margin-top: $PBHeight / 2;
+      width: 200px;
+      background: red;
+      .PB {
+        height: $PBHeight;
+        background: green;
+      }
+    }
   }
 </style>

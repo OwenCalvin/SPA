@@ -1,14 +1,14 @@
 <template>
   <div class="hello">
-    <h1>Page1</h1>
-    <p>Vue edgfhsdfgsdgfsddfghdst un</p>
+    <h1>Page3</h1>
+    <p>Vue est un</p>
     <img src="../../assets/logo.png" alt="">
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Page1'
+  name: 'Page3'
 }
 </script>
 
