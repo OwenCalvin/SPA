@@ -1,4 +1,4 @@
-import Articles, { DefaultArticle } from './Articles'
+import Articles from './Articles'
 
 export default class Loader {
   // Return the number of articles
@@ -14,14 +14,11 @@ export default class Loader {
 
   // Load view from JSON datas
   static LoadView (page) {
-    return Loader.Load(page).view
+    return Loader.Load(page)
   }
 
   // Load datas from JSON file
   static Load (page) {
-    let articleFound = Articles.find((article) => {
-      return article.page === parseInt(page)
-    })
-    return articleFound || DefaultArticle
+    return Articles[page - 1]
   }
 }
