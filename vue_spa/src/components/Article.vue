@@ -16,7 +16,7 @@
       </div>
       <div class="controls">
         <div class="PT" id="PTPrev" >
-          <button @click="previous" @keydown.37="previous">Previous</button>
+          <button :class="{disable: Page <= 1}" @click="previous" @keydown.37="previous">Previous</button>
         </div>
         <div class="backPB">
           <div :style="{width: Progression + '%'}" class="PB">
@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="PT" id="PTNext">
-          <button @click="next" @keydown.39="next">Next</button>
+          <button :class="{disable: Page >= TotalPage}" @click="next" @keydown.39="next">Next</button>
         </div>
         </div>
     </footer>
@@ -57,7 +57,7 @@ export default {
     pageTurner: function (value) {
       this.Page = Loader.TurnPage(this.Page, value)
       this.View = Loader.LoadView(this.Page)
-      this.Progression = Math.round((this.Page - 1) / (this.TotalPage - 1) * 100, -1)
+      this.Progression = Math.round(this.Page / this.TotalPage * 100, -1)
     }
   },
   mounted: function () {
@@ -65,10 +65,10 @@ export default {
     window.addEventListener('keydown', function (event) {
       switch (event.keyCode) {
         case 37:
-          _this.pageTurner(-1)
+          _this.previous()
           break
         case 39:
-          _this.pageTurner(1)
+          _this.next()
           break
       }
     })
@@ -169,5 +169,9 @@ export default {
 
   .text-center {
     text-align: center
+  }
+
+  .disable {
+    opacity: .5;
   }
 </style>
