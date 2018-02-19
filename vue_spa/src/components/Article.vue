@@ -41,10 +41,8 @@ export default {
   data: function () {
     let Page = 1
     return {
-      View: Loader.LoadView(Page),
       Page: Page,
-      TotalPage: Loader.Count,
-      Progression: 0
+      TotalPage: Loader.Count
     }
   },
   methods: {
@@ -56,17 +54,25 @@ export default {
     },
     pageTurner: function (value) {
       this.Page = Loader.TurnPage(this.Page, value)
-      this.View = Loader.LoadView(this.Page)
-      this.Progression = Math.round(this.Page / this.TotalPage * 100, -1)
+    }
+  },
+  computed: {
+    Progression: function () {
+      return Math.round(this.Page / this.TotalPage * 100, -1)
+    },
+    View: function () {
+      return Loader.LoadView(this.Page)
     }
   },
   mounted: function () {
     let _this = this
     window.addEventListener('keydown', function (event) {
       switch (event.keyCode) {
+        // Right arrow
         case 37:
           _this.previous()
           break
+        // Left arrow
         case 39:
           _this.next()
           break
