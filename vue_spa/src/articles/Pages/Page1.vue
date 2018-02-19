@@ -2,7 +2,6 @@
   <div class="hello">
     <h1>Page1</h1>
     <p>Vue edgfhsdfgsdgfsddfghdst un</p>
-    <img src="../../assets/logo.png" alt="">
   </div>
 </template>
 

@@ -2,7 +2,6 @@
   <div class="hello">
     <h1>Page3</h1>
     <p>Vue est un</p>
-    <img src="../../assets/logo.png" alt="">
   </div>
 </template>
 
