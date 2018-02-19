@@ -19,5 +19,10 @@ export default [
     page: 3,
     title: 'Title3',
     view: () => import('./Pages/Page3.vue')
+  },
+  {
+    page: 4,
+    title: 'Title4',
+    view: () => import('./Pages/Page4.vue')
   }
 ]

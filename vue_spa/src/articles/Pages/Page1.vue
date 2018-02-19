@@ -1,18 +1,16 @@
 <template>
-  <div class="hello">
-    <h1>Page1</h1>
-    <p>Vue edgfhsdfgsdgfsddfghdst un</p>
+  <div class="page">
+    <h1>Qu'est ce que c'est ?</h1>
+    <p>VueJS est un framework</p>
   </div>
 </template>
+
+<style lang="scss" scoped>
+  @import './style/Page.scss';
+</style>
 
 <script>
 export default {
   name: 'Page1'
 }
 </script>
-
-<style scoped>
-  p {
-    word-wrap: break-word;
-  }
-</style>

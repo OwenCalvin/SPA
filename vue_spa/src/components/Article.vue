@@ -1,25 +1,34 @@
 <template>
-  <div @keydown.enter="alert('hi')">
+  <div id="all" @keydown.enter="alert('hi')">
     <header>
       <img src="../assets/logo.png" alt="Vue"/>
     </header>
-    <transition name="component-fade" mode="out-in">
-      <component :is="View"></component>
-    </transition>
+
+    <div id="component">
+      <transition name="component-fade" mode="out-in">
+        <component :is="View"></component>
+      </transition>
+    </div>
+
     <footer>
-      <div class="PT" id="PTPrev" >
-        <button @click="previous" @keydown.37="previous">Previous</button>
+      <div class="pageStatus textCenter">
+        {{ Page }} / {{ TotalPage }}
       </div>
-      <div class="backPB">
-        <div :style="{width: Progression + '%'}" class="PB">
-          <div v-if="Progression > 0">
-            {{ Progression }}
+      <div class="controls">
+        <div class="PT" id="PTPrev" >
+          <button @click="previous" @keydown.37="previous">Previous</button>
+        </div>
+        <div class="backPB">
+          <div :style="{width: Progression + '%'}" class="PB">
+            <div v-if="Progression > 0">
+              {{ Progression }} %
+            </div>
           </div>
         </div>
-      </div>
-      <div class="PT" id="PTNext">
-        <button @click="next" @keydown.39="next">Next</button>
-      </div>
+        <div class="PT" id="PTNext">
+          <button @click="next" @keydown.39="next">Next</button>
+        </div>
+        </div>
     </footer>
   </div>
 </template>
@@ -34,6 +43,7 @@ export default {
     return {
       View: Loader.LoadView(Page),
       Page: Page,
+      TotalPage: Loader.Count,
       Progression: 0
     }
   },
@@ -47,7 +57,7 @@ export default {
     pageTurner: function (value) {
       this.Page = Loader.TurnPage(this.Page, value)
       this.View = Loader.LoadView(this.Page)
-      this.Progression = (this.Page - 1) / (Loader.Count - 1) * 100
+      this.Progression = Math.round((this.Page - 1) / (this.TotalPage - 1) * 100, -1)
     }
   },
   mounted: function () {
@@ -76,58 +86,67 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-  footer {
-    $footerHeight: 40px;
+  #all {
+    margin-bottom: 100px;
+  }
 
+  footer {
     box-shadow: -2px 1px 17px 0px rgb(240, 240, 240);
+    background: white;
     position: fixed;
     bottom: 0;
-    display: flex;
     width: 100%;
-    justify-content: space-between;
     margin: 0;
-    height: auto;
-    flex-wrap: wrap;
-    height: $footerHeight;
 
-    .PT button {
-      $buttonHeight: $footerHeight - 10px;
-
-      height: $buttonHeight;
-      margin-top: $footerHeight / 2 - $buttonHeight / 2;
-      min-width: 100px;
-      background: #e4e4e4;
-      border: none;
-      font-size: 1em;
-      color: rgb(134, 134, 134);
-      font-weight: 700;
-      border-radius: 10px;
-      margin-left: 10px;
-      margin-right: 10px;
+    .pageStatus {
+      font-weight: bold;
+      padding-top: 10px;
     }
 
-    .backPB {
-      $PBHeight: 20px;
+    .controls {
+      $buttonHeight: 30px;
+      $margin: 10px;
+      height: auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
 
-      height: $PBHeight;
-      margin: 0 10px;
-      margin-top: $footerHeight / 2 - $PBHeight / 2;
-      width: 30%;
-      min-width: 200px;
-      background: rgb(240, 240, 240);
-      border-radius: 20px;
-      overflow: hidden;
-      .PB {
-        font-weight: bold;
+      .PT button {
+        height: $buttonHeight;
+        min-width: 100px;
+        background: #e4e4e4;
+        border: none;
+        font-size: 1em;
+        color: rgb(134, 134, 134);
+        font-weight: 700;
+        border-radius: 10px;
+        margin: $margin;
+      }
+
+      .backPB {
+        $PBHeight: 20px;
+
         height: $PBHeight;
-        background: #54d78e;
-        background: -moz-linear-gradient(-45deg, #54d78e 0%, #39dc84 100%);
-        background: -webkit-linear-gradient(-45deg, #54d78e 0%,#39dc84 100%);
-        background: linear-gradient(135deg, #54d78e 0%,#39dc84 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#54d78e', endColorstr='#39dc84',GradientType=1 );
-        transition: width .2s;
-        color: white;
-        line-height: $PBHeight;
+        margin: 0 10px;
+        margin-top: ($buttonHeight + 2 * $margin) / 2 - $PBHeight / 2;
+        width: 30%;
+        min-width: 200px;
+        background: rgb(240, 240, 240);
+        border-radius: 20px;
+        overflow: hidden;
+        .PB {
+          text-align: center;
+          font-weight: bold;
+          height: $PBHeight;
+          background: #54d78e;
+          background: -moz-linear-gradient(-45deg, #54d78e 0%, #39dc84 100%);
+          background: -webkit-linear-gradient(-45deg, #54d78e 0%,#39dc84 100%);
+          background: linear-gradient(135deg, #54d78e 0%,#39dc84 100%);
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#54d78e', endColorstr='#39dc84',GradientType=1 );
+          transition: width .2s;
+          color: white;
+          line-height: $PBHeight;
+        }
       }
     }
   }
@@ -135,6 +154,7 @@ export default {
   header {
     $HeaderHeight: 50px;
 
+    text-align: center;
     width: 100%;
     height: $HeaderHeight;
     box-shadow: 2px 4px 17px 0px rgb(235, 235, 235);
@@ -145,5 +165,9 @@ export default {
       margin-top: $HeaderHeight / 2 - $ImgHeight / 2;
       height: $ImgHeight;
     }
+  }
+
+  .text-center {
+    text-align: center
   }
 </style>
