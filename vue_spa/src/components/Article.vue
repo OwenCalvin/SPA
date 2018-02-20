@@ -66,7 +66,7 @@ export default {
   },
   mounted: function () {
     let _this = this
-    window.addEventListener('keydown', function (event) {
+    window.addEventListener('keypress', function (event) {
       switch (event.keyCode) {
         // Right arrow
         case 37:

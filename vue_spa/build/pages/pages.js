@@ -12,63 +12,76 @@ const templatePath = './build/pages/Template.vue'
 
 switch (process.argv[2]) {
   case 'create':
-    fs.readdir(pagesFolder, (err, files) => {
-      if (err) {
-        console.log(err)
-      } else {
-        let iterations = process.argv[3] ? process.argv[3] : 1
-        for (let i = 0; i < iterations; i++) {
-          let newFileName = getNewFileName(files.length + i + 1)
-          fs.copyFile(templatePath, pagesFolder + newFileName, err => {
-            if (err) {
-              console.log(err)
-            } else {
-              console.log(colors.green('La nouvelle page à été créée'))
-              console.log(colors.green.underline(newFileName + '\n'))
-            }
-          })
-        }
-      }
-    })
+    create()
     break
 
   case 'compile':
-    fs.readdir(pagesFolder, (err, files) => {
-      if (err) {
-        console.log(err)
-      } else {
-        let stdout = '/* eslint-disable */\nexport default ['
-        files.forEach(file => {
-          let fileInfos = getFileInfos(file)
-          if (fileInfos.pageBase === 'page' && fileInfos.pageExtension === 'vue') {
-            if (fileInfos.pageNumber <= files.length && fileInfos.pageNumber > 0) {
-              stdout += `{ page: ${fileInfos.pageNumber}, view: () => import('${relativePathForArticlesJS + file}') },`
-            } else {
-              console.log(colors.red('The page number is not correct' + fileInfos.pageNumber))
-              logCorrect()
-            }
-          } else {
-            console.log(colors.red('Le nom de ce fichier n\'est pas correct: ' + colors.underline(file)))
-            logCorrect()
-          }
-        })
-        stdout += ']\n'
-
-        console.log(colors.green('\nTout est okay !'))
-        console.log(colors.green('(Les fichiers contenants des erreurs sont ignorés)\n'))
-        console.log(files)
-        fs.writeFile(articlePath + articlesFile, stdout, err => {
-          if (err) {
-            console.log(err)
-          }
-        })
-      }
-    })
+    compile()
     break
 
   default:
     console.log('Command not found')
     break
+}
+
+function create () {
+  fs.readdir(pagesFolder, (err, files) => {
+    if (err) {
+      console.log(err)
+    } else {
+      let iterations = process.argv[3] ? process.argv[3] : 1
+      for (let i = 0; i < iterations; i++) {
+        let newFileName = getNewFileName(files.length + i + 1)
+        fs.copyFile(templatePath, pagesFolder + newFileName, err => {
+          if (err) {
+            console.log(err)
+          } else {
+            console.log(colors.green('La nouvelle page à été créée'))
+            console.log(colors.green.underline(newFileName + '\n'))
+          }
+        })
+      }
+      compile()
+    }
+  })
+}
+
+function compile () {
+  fs.readdir(pagesFolder, (err, files) => {
+    if (err) {
+      console.log(err)
+    } else {
+      let stdout = '/* eslint-disable */\nexport default ['
+      files.forEach(file => {
+        let fileInfos = getFileInfos(file)
+        if (fileInfos.pageBase === 'page' && fileInfos.pageExtension === 'vue') {
+          if (fileInfos.pageNumber <= files.length && fileInfos.pageNumber > 0) {
+            stdout += `{ page: ${fileInfos.pageNumber}, view: () => import('${relativePathForArticlesJS + file}') },`
+          } else {
+            console.log(colors.red('The page number is not correct' + fileInfos.pageNumber))
+            logCorrect()
+          }
+        } else {
+          console.log(colors.red('Le nom de ce fichier n\'est pas correct: ' + colors.underline(file)))
+          logCorrect()
+        }
+      })
+      stdout += ']\n'
+
+      console.log(colors.green('\nTout est okay !'))
+      console.log(colors.green('(Les fichiers contenants des erreurs sont ignorés)\n'))
+      console.log(files)
+      fs.writeFile(articlePath + articlesFile, stdout, err => {
+        if (err) {
+          console.log(err)
+        }
+      })
+    }
+  })
+}
+
+function getNewFileName (pageNumber) {
+  return pageName + pageNumber + pageExtension
 }
 
 function logCorrect (extra = '') {
@@ -91,8 +104,4 @@ function getFileInfos (file) {
     pageNumber: pageNumber,
     pageBase: pageBase
   }
-}
-
-function getNewFileName (pageNumber) {
-  return pageName + pageNumber + pageExtension
 }
