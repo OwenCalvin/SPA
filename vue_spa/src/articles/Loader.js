@@ -14,11 +14,13 @@ export default class Loader {
 
   // Load view from JSON datas
   static LoadView (page) {
-    return Loader.Load(page)
+    return Loader.Load(page).view
   }
 
   // Load datas from JSON file
   static Load (page) {
-    return Articles[page - 1]
+    return Articles.find(article => {
+      return parseInt(article.page) === parseInt(page)
+    })
   }
 }
